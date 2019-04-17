@@ -1,0 +1,57 @@
+name:                neo4j-workshop
+version:             0.1.0.0
+github:              "biocad/neo4j-workshop"
+license:             BSD3
+author:              "Maxim Koltsov"
+maintainer:          "koltsov@biocad.ru"
+copyright:           "(c) 2019, BIOCAD CBD"
+
+extra-source-files:
+  - README.md
+
+description:         Please see the README on GitHub at <https://github.com/biocad/neo4j-workshop#readme>
+
+dependencies:
+  - base >= 4.7 && < 5
+  - containers
+  - hasbolt >= 0.1.3.3
+  - hasbolt-extras
+  - lens
+  - mtl
+  - text
+
+default-extensions:
+  - OverloadedStrings
+  - RankNTypes
+  - TemplateHaskell
+  - TypeApplications
+
+ghc-options:
+  - -Wall
+
+library:
+  source-dirs: src
+  dependencies:
+    - data-default
+
+executables:
+  neo4j-sample:
+    main: Sample.hs
+    source-dirs: tasks
+    other-modules: []
+    dependencies:
+      - neo4j-workshop
+
+  neo4j-task1:
+    main: Task1.hs
+    source-dirs: tasks
+    other-modules: []
+    dependencies:
+      - neo4j-workshop
+
+  neo4j-task2:
+    main: Task2.hs
+    source-dirs: tasks
+    other-modules: []
+    dependencies:
+      - neo4j-workshop
