@@ -2,6 +2,7 @@ module Main where
 
 import           Control.Lens            hiding ( at )
 import           Control.Monad
+import           Control.Monad.State
 import qualified Data.Map.Strict               as Map
 import           Data.Text                      ( Text
                                                 , intercalate
@@ -48,7 +49,12 @@ main = do
   -- Разобрать ответ на запрос lukeQ. Сохранить результат в словарь Map, ключ -- название фильма,
   -- значение.
   -- Подсказка -- для заполнения Map можно воспользоваться Control.Monad.State
-  let talking = undefined :: Map.Map Text [Text]
+  let talking = flip execState mempty $ forM_ res2 $ \rec -> do
+        -- Для разнообразия на линзах
+        let movieName   = rec ^?! field "movie" . prop @Text "title"
+        let someoneName = rec ^?! field "someone" . prop @Text "name"
+
+        modify $ Map.insertWith (<>) movieName [someoneName]
 
   putStrLn "Characters Luke talks to:"
   forM_ (Map.toList talking) $ \(movie, characters) ->
