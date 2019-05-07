@@ -1,6 +1,7 @@
 module Main where
 
 import           Control.Monad
+import           Control.Monad.State
 import           Data.Function                  ( (&) )
 import qualified Data.Map.Strict               as Map
 import           Data.Text                      ( Text
@@ -41,7 +42,11 @@ main = do
   res  <- run pipe $ makeRequest @GetRequest [] lukeGraph
 
   -- Разберите ответ аналогично предыдущей задаче.
-  let talking = undefined :: Map.Map Text [Text]
+  let talking = flip execState mempty $ forM_ res $ \graph -> do
+        let Movie movieName    = extractNode "movie" graph
+        let Person someoneName = extractNode "someone" graph
+
+        modify $ Map.insertWith (<>) movieName [someoneName]
 
   putStrLn "Characters Luke talks to:"
   forM_ (Map.toList talking) $ \(movie, characters) ->
