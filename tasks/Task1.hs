@@ -30,7 +30,10 @@ main = do
 
   putStrLn "Number of characters in movies"
   forM_ res $ \rec -> do
-    undefined
+    movie      <- rec `at` "movie" >>= exact @Text
+    characters <- rec `at` "characters" >>= exact @Int
+
+    putStrLn $ unpack movie <> ": " <> show characters <> " characters."
 
     -- **ЗАДАНИЕ**
     -- Из полученного ответа достать название фильма (Text в поле "movie") и число персонажей
