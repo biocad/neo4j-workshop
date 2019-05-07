@@ -17,7 +17,23 @@ import           Types
 -- Напишите запрос, который вернет людей, с которыми говорил Люк, и фильмы в которых они
 -- появлялись аналогично предыдущей задаче, с использованием шаблонов графов.
 lukeGraph :: GraphGetRequest
-lukeGraph = undefined
+lukeGraph =
+  emptyGraph
+    & addNode
+        "luke"
+        ( defaultNodeReturn
+        & withLabelQ ''Person
+        & withProp ("name", T "LUKE")
+        & withReturn allProps
+        )
+    & addNode "someone"
+              (defaultNodeReturn & withLabelQ ''Person & withReturn allProps)
+    & addNode "movie"
+              (defaultNodeReturn & withLabelQ ''Movie & withReturn allProps)
+    & addRelation "luke"
+                  "someone"
+                  (defaultRelNotReturn & withLabelQ ''SPEAKS_WITH)
+    & addRelation "someone" "movie" (defaultRelReturn & withLabelQ ''APPEARS_IN)
 
 main :: IO ()
 main = do
