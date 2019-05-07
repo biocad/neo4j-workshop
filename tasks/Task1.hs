@@ -21,7 +21,10 @@ countQ =
 -- Запрос должен найти всех людей, с которыми говорил Люк ('LUKE'), а также фильмы, в которых
 -- они появлялись.
 lukeQ :: Text
-lukeQ = undefined
+lukeQ =
+  "MATCH (luke:Person) -[:SPEAKS_WITH]- (someone:Person) -[:APPEARS_IN]- (movie:Movie) \
+  \WHERE luke.name = 'LUKE' \
+  \RETURN luke, someone, movie"
 
 main :: IO ()
 main = do
