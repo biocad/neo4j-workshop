@@ -9,9 +9,11 @@ import           Data.Text                      ( Text
                                                 , unpack
                                                 )
 import           Database.Bolt           hiding ( unpack )
+import           Database.Bolt.Extras
 import           Database.Bolt.Lens      hiding ( exact )
 
 import           Config
+import           Types
 
 countQ :: Text
 countQ =
@@ -51,8 +53,8 @@ main = do
   -- Подсказка -- для заполнения Map можно воспользоваться Control.Monad.State
   let talking = flip execState mempty $ forM_ res2 $ \rec -> do
         -- Для разнообразия на линзах
-        let movieName   = rec ^?! field "movie" . prop @Text "title"
-        let someoneName = rec ^?! field "someone" . prop @Text "name"
+        let Movie movieName    = rec ^?! field "movie" . to fromNode
+        let Person someoneName = rec ^?! field "someone" . to fromNode
 
         modify $ Map.insertWith (<>) movieName [someoneName]
 
